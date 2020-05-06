@@ -109,7 +109,7 @@ class GA:
             Bit-flip mutation with `mutation_prob`
         """
         offsprings = np.array(offsprings)
-        rand_mutation = np.random.random(size=(offsprings.shape))
+        rand_mutation = np.random.random(size=offsprings.shape)
 
         random_mutation_boolean = rand_mutation <= mutation_prob
 
@@ -117,6 +117,15 @@ class GA:
             offsprings[random_mutation_boolean])
 
         return list(offsprings)
+
+    def terminate(self, population: List) -> np.ndarray:
+        """
+            Return the best individual
+        """
+        scores = np.array([self.fitness(g) for g in population])
+        print(f"The average score of the best individual: {np.amax(scores)}")
+
+        return population[scores.argmax()]
 
     def evolution(self, start_population_size: int, generations: int) -> None:
         """
@@ -143,6 +152,8 @@ class GA:
             mutation_prob = (-1.1 * avg + 1) / 10
 
             print("____________\n")
+
+        best = self.terminate(population)
 
 
 if __name__ == "__main__":
